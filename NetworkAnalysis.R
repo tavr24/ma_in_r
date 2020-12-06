@@ -14,7 +14,7 @@ library(netmeta)
 library(dplyr)
 
 # Read in the excel file selecting the sheet with the data.
-smd = read_excel("AlzheimersData.xlsx", sheet = "Standardized Mean Diff Final")
+smd = read_excel("AlzheimersData.xlsx", sheet = "Standardized Mean Diff")
 
 # Subset by whether each row belongs in the higher is better (hb) or higher is worse (hw) data frame.
 hw = smd[smd$HigherWorse == 1, -8]
