@@ -1,11 +1,12 @@
-### File: NetworkAnalysis.R
+##############################################################################
+### File: NetworkAnalysis.R ##################################################
 ### 
-###
-###
 ### This file includes code to perform Network Meta-Analysis.
+### 
+##############################################################################
 
 ## Set working directory
-#setwd("C:/Users/Leonid/Downloads/MA12.05") # ("C:/Users/tamara.vrublevskaya/Downloads")
+#setwd(".")
 
 ## Load needed libraries
 library(readxl)
@@ -23,6 +24,7 @@ hb = smd[smd$HigherWorse == 0, -8]
 hw$Study = paste(hw$Authors, hw$Year, sep = " ")
 hb$Study = paste(hb$Authors, hb$Year, sep = " ")
 
+##############################################################################
 ####  Higher Better ##########################################################
 ##############################################################################
 # Initiate a place to store data, only it is empty for now.
@@ -128,8 +130,8 @@ for(i in 1: length(studies)){
     
     # Label arms appropriately
     treat1 = c(rep(st1$`Treatment Dose`[1], 4), rep(st1$`Treatment Dose`[2], 3), st1$`Treatment Dose`[3], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4])
-    treat2 = c(st1$`Treatment Dose`[2], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4], 
-               st1$`Treatment Dose`[5], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[5])
+    treat2 = c(st1$`Treatment Dose`[2], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[3], 
+               st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[5])
     
     # Store the results to be added on to metaresHB
     dr = data.frame(TE, seTE = round(seTE, 4), treat1, treat2, studlab = name[1,], Type = st1$`Treatment Type`[1])
@@ -137,8 +139,6 @@ for(i in 1: length(studies)){
   
   # Attach results to the data frame that stores them
   metaresHB = rbind(metaresHB, dr)
-  
-  
 }
 
 # Rename a column so that the netmeta function can identify it.
@@ -181,6 +181,7 @@ dev.off()
 metabias(metagen(TE.adj, seTE, data = fl.hb))
 metabias(metagen(TE.adj, seTE, data = fl.hb), method = "mm")
 
+##############################################################################
 ####  Higher Worse ###########################################################
 ##############################################################################
 # Initiate a place to store data, only it is empty for now.
@@ -288,8 +289,8 @@ for(i in 1: length(studiesW)){
     
     # Label arms appropriately
     treat1 = c(rep(st1$`Treatment Dose`[1], 4), rep(st1$`Treatment Dose`[2], 3), st1$`Treatment Dose`[3], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4])
-    treat2 = c(st1$`Treatment Dose`[2], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4], 
-               st1$`Treatment Dose`[5], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[5])
+    treat2 = c(st1$`Treatment Dose`[2], st1$`Treatment Dose`[3], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[3], 
+               st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[4], st1$`Treatment Dose`[5], st1$`Treatment Dose`[5])
     
     # Store the results to be added on to metaresHW
     dr = data.frame(TE, seTE = round(seTE, 4), treat1, treat2, studlab = name[1,], Type = st1$`Treatment Type`[1])

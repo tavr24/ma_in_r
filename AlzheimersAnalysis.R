@@ -1,12 +1,13 @@
-### File: AlzheimersAnalysis.R
-### 
+##########################################################################
+### File: AlzheimersAnalysis.R ###########################################
 ###
+### This file includes code to generate some basic summary graphs 
+### of the results of studies included for meta-analysis evaluation.
 ###
-### This file includes code to generate some basic summary graphs of the results of 
-### studies included for meta-analysis evaluation..
+##########################################################################
 
 ## Set working directory
-#setwd("C:/Users/Leonid/Downloads/MA12.05") # ("C:/Users/tamara.vrublevskaya/Downloads")
+#setwd(".")
 
 ## Load needed libraries
 library(readxl)
@@ -18,11 +19,9 @@ overall = read_excel("AlzheimersData.xlsx", sheet = "Data Binary")
 # Import the data sheet that has adverse effects percentages.
 adverse = read_excel("AlzheimersData.xlsx", sheet = "Adverse Effects")
 
-
-
-########################################################################################################
+##########################################################################
 #####     Adverse Effects           ######################################
-########################################################################################################
+##########################################################################
 
 # Change all treatment labels to either placebo or treatment.
 adverse$TRT = ifelse((adverse$Treatment == "Placebo - carrier" | adverse$Treatment == "Placebo" | adverse$Treatment == "Control" | adverse$Treatment == "Placebo - noncarrier"), "Placebo", "Treatment")
@@ -61,9 +60,9 @@ ggplot(na.omit(gadverse_long), aes(x=Type, y=percent)) +
   xlab("Natural or Non-Natural") + 
   ylab("Percent of Patients")
 
-########################################################################################################
-#####     Data Binary  ######################################################
-########################################################################################################
+##########################################################################
+#####     Data Binary  ###################################################
+##########################################################################
 
 # Select the data of interest.
 bin = overall[,c("ID", "Treatment Type", "Treatment Superior (0 = No/Undetermined, 1 = Yes)")]

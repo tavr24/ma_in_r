@@ -1,11 +1,12 @@
-### File: CombinedGroups.R
+##########################################################################
+### File: CombinedGroups.R ###############################################
 ### 
-###
-###
 ### This file includes code to perform Meta-Analysis for paired outcomes.
+###
+##########################################################################
 
 ## Set working directory
-#setwd("C:/Users/Leonid/Downloads/MA12.05") # ("C:/Users/tamara.vrublevskaya/Downloads")
+#setwd(".")
 
 ## Load needed libraries
 library(readxl)
@@ -29,9 +30,9 @@ colnames(smd_c)[2] = "Type"
 hw = smd_c[smd_c$HigherWorse == 1, -3] #Higher worse
 hb = smd_c[smd_c$HigherWorse == 0, -3] #Higher Better
 
-#####################################################################
-## Continuous Effects Meta-Analysis for the Higher is Worse Model####
-#####################################################################
+##########################################################################
+## Continuous Effects Meta-Analysis for the Higher is Worse Model ########
+##########################################################################
 
 # Fit both fixed and random effects models:
 hw_model = metacont(Ne, Me, Se, Nc, Mc, Sc, data = hw, studlab = Study, sm = "SMD")
@@ -93,12 +94,9 @@ dev.off()
 metacont(Ne, Me, Se, Nc, Mc, Sc, data = hw, studlab = Study, sm = "SMD", byvar = ES)
 
 
-#####################################################################
-## Continuous Effects Meta-Analysis for the Higher is Better Model###
-#####################################################################
-
-
-#####################################################################
+##########################################################################
+## Continuous Effects Meta-Analysis for the Higher is Better Model #######
+##########################################################################
 
 # Fit both fixed and random effects models:
 hb_model = metacont(Ne, Me, Se, Nc, Mc, Sc, data = hb, studlab = Study, sm = "SMD")
