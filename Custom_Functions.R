@@ -307,13 +307,13 @@ do_continuous_ma <- function(high_type, smp) {
 	metabias(hwb_model, method = "rank")
 
 	# Run linear regression test for plot asymmetry (Egger's Test):
-	metabias(hwb_model, method = "linreg", plotit = TRUE)
+	metabias(hwb_model, method = "linreg", plotit = FALSE) # plotit = TRUE produces standardised treatment effect (z-score) plot
 
 	# Run Thompson and Sharp test - a variant of Egger's test allowing for between-study heterogeneity
-	metabias(hwb_model, method = "mm")
+	metabias(hwb_model, method = "mm", plotit = FALSE)
 
 	if (high_type == "higher-is-worse") {
-		# Given the evidence of bias, run trim and fill and regression methods:
+		# Given the evidence of bias, run trim and fill and regression methods: 
 		trimfill_hw_model = trimfill(hwb_model) # Trim and Fill Method
 		print(trimfill_hw_model, digits = 2, comb.fixed = TRUE) # Print output of Trim and Fill Method
 		ll_hw_model = limitmeta(hwb_model) # Regression Method
