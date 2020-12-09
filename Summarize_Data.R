@@ -8,7 +8,7 @@
 
 ## Load needed libraries
 library(readxl)
-library(tidyverse)
+library(dplyr)
 
 excel_file_name = "AlzheimersData.xlsx"
 
