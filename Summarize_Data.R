@@ -28,10 +28,10 @@ adverse$TRT = ifelse((adverse$Treatment == "Placebo - carrier" | adverse$Treatme
 adverse = adverse %>% mutate_all(funs(str_replace(., "<", "")))
 
 # Change columns 15 to 125 to numeric.
-adverse[15:125] = sapply(adverse[15:125],as.numeric)
+adverse[15:124] = sapply(adverse[15:124],as.numeric) 
 
 # Group by study and treatment and generate the mean
-adverseSum = adverse[,c(1, 15:126)] %>% group_by(ID, TRT) %>% summarise_all("mean")
+adverseSum = adverse[,c(1, 15:125)] %>% group_by(ID, TRT) %>% summarise_all("mean") 
 
 # Select only the first row.
 Type = adverse[,c("ID", "TRT", "Treatment Type")] %>% group_by(ID, TRT) %>% filter(row_number()==1)
@@ -44,20 +44,40 @@ na_count <-sapply(adverseSum1[,-c(1,2)], function(y) sum(length(which(!is.na(y))
 vars = names(sort(na_count, decreasing = T)[2:11])
 gadverse = adverseSum1[,c("ID", "TRT", "Treatment Type", vars)]
 
+colnames(gadverse)[which(names(gadverse) == "At least one adverse event")]          = "AE" 
+colnames(gadverse)[which(names(gadverse) == "At least one serious adverse event")]  = "sAE"
+colnames(gadverse)[which(names(gadverse) == "Fall")]                                = "F"
+colnames(gadverse)[which(names(gadverse) == "Headache")]                            = "H"
+colnames(gadverse)[which(names(gadverse) == "Dizziness/Vertigo")]                   = "Z"
+colnames(gadverse)[which(names(gadverse) == "Nausea")]                              = "N"
+colnames(gadverse)[which(names(gadverse) == "Diarrhea")]                            = "D"
+colnames(gadverse)[which(names(gadverse) == "Vomiting")]                            = "V"
+colnames(gadverse)[which(names(gadverse) == "Urinary Tract Infection")]             = "U"
+colnames(gadverse)[which(names(gadverse) == "Agitation")]                           = "A"
+
 # Convert the data from wide to long form so that it may be plotted using ggplot.
-gadverse_long = gather(gadverse, adverseEffect, percent, `At least one adverse event`:Agitation, factor_key=TRUE)
+gadverse_long = gather(gadverse, adverseEffect, percent, AE:A, factor_key=TRUE)
+
 colnames(gadverse_long)[3] = "Type"
-gadverse_long$Type[gadverse_long$Type == "not-natural"] = "non-natural"
+
+gadverse_long$Type[gadverse_long$Type == "natural"] = "Y" # non-natural"
+gadverse_long$Type[gadverse_long$Type == "non-natural"] = "N" # non-natural"
+gadverse_long$Type[gadverse_long$Type == "not-natural"] = "N" # non-natural"
 gadverse_long$Type[gadverse_long$Type == "both"] = NA
+
+# Adverse effects by non-natural and natural treatments plot file name:
+adverse_effects_by_non_natural_and_natural_treatments_jpeg_file_name = 'adverse_effects_by_non_natural_and_natural_treatments_plot.jpeg'
+# Adverse effects by non-natural and natural treatments plot:
+jpeg(adverse_effects_by_non_natural_and_natural_treatments_jpeg_file_name, width = 18, height = 8, units = "in", res = 300)
 
 ggplot(na.omit(gadverse_long), aes(x=Type, y=percent)) + 
   geom_boxplot() + 
   theme_bw() + 
   facet_grid(TRT ~ adverseEffect) + 
-  ggtitle("Adverse Effects by Natural and Non-Natural Treatments") + 
-  xlab("Natural or Non-Natural") + 
+  xlab("Non-Natural (N) vs. Natural (Y)") + 
   ylab("Percent of Patients")
 
+dev.off()
 
 ########################################################################################
 ####     Data Binary                                                                ####
@@ -87,8 +107,14 @@ df$Superior = as.factor(df$Superior)
 # Remove "both" (leaving "natural" and "non-natural")
 df1 = df[df[, "Type"] != "both",]
 
-# Plot.
+# Overall effectiveness natural and non-natural treatments plot file name:
+overall_effectiveness_natural_and_non_natural_treatments_jpeg_file_name = 'overall_effectiveness_natural_and_non_natural_treatments_plot.jpeg'
+# Overall effectiveness natural and non-natural treatments plot:
+jpeg(overall_effectiveness_natural_and_non_natural_treatments_jpeg_file_name, width = 18, height = 8, units = "in", res = 300)
+
 ggplot(df1, aes(x = Type, y = counts, fill = Superior)) +
   geom_bar(stat = "identity") +
   theme_bw()
+
+dev.off()
 
